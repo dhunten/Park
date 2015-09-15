@@ -195,6 +195,7 @@
 				TargetAttributes = {
 					C3BC16E01BA2467A003AB8C3 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = 7LP64XVHGM;
 					};
 					C3BC16F71BA2467A003AB8C3 = {
 						CreatedOnToolsVersion = 7.0;
@@ -400,10 +401,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Park2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = BLOOF.Park2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -411,10 +415,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Park2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = BLOOF.Park2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -485,6 +492,7 @@
 				C3BC170E1BA2467B003AB8C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C3BC170F1BA2467B003AB8C3 /* Build configuration list for PBXNativeTarget "Park2Tests" */ = {
 			isa = XCConfigurationList;
@@ -493,6 +501,7 @@
 				C3BC17111BA2467B003AB8C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C3BC17121BA2467B003AB8C3 /* Build configuration list for PBXNativeTarget "Park2UITests" */ = {
 			isa = XCConfigurationList;
@@ -501,6 +510,7 @@
 				C3BC17141BA2467B003AB8C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

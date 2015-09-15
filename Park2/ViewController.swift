@@ -12,13 +12,9 @@ import MapKit
 import CoreData
 
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
-    @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var save: UIBarButtonItem!
-    @IBOutlet weak var load: UIBarButtonItem!
-
     
+    @IBOutlet weak var mapView: MKMapView!
     var manager: CLLocationManager!
-    var corelocations = [NSManagedObject]()
     var tempLocation = CLLocation()
     let dropPin = MKPointAnnotation()
 
@@ -57,7 +53,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let newLocation = CLLocation(latitude: latitude, longitude: longitude)
         let regionRadius: CLLocationDistance = 10
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, regionRadius * 2.0, regionRadius * 2.0)
-        mapView.setRegion(coordinateRegion, animated: false)
+        mapView.setRegion(coordinateRegion, animated: true)
         
         // Drop a pin at current location
         dropPin.coordinate = newLocation.coordinate
