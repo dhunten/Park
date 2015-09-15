@@ -49,22 +49,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     
+    
+    func updatePinAndMap(latitude: Double, longitude: Double) {
+        
+        // Update the map's viewable region
+        let newLocation = CLLocation(latitude: latitude, longitude: longitude)
+        let regionRadius: CLLocationDistance = 10
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, regionRadius * 2.0, regionRadius * 2.0)
+        mapView.setRegion(coordinateRegion, animated: false)
+        
+        // Drop a pin at current location
+        dropPin.coordinate = newLocation.coordinate
+        dropPin.title = "My Parking Spot"
+        mapView.addAnnotation(dropPin)
+    }
+    
+    
+    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("\(locations[0])")
         tempLocation = locations[0]
         
-        
-        // Update the map's viewable region
-        let initialLocation = locations[0]
-        let regionRadius: CLLocationDistance = 10
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(initialLocation.coordinate, regionRadius * 2.0, regionRadius * 2.0)
-        mapView.setRegion(coordinateRegion, animated: false)
-        
-        // Drop a pin at current location
-        // TODO: reuse the pin so there aren't multiples
-        dropPin.coordinate = initialLocation.coordinate
-        dropPin.title = "My Parking Spot"
-        mapView.addAnnotation(dropPin)
+        updatePinAndMap(tempLocation.coordinate.latitude, longitude: tempLocation.coordinate.longitude)
+
     }
     
     
@@ -100,22 +107,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     // Load data from core data
-    func loadLocation() {
+    func loadLocation() -> (Double, Double) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let moc = appDelegate.managedObjectContext
         let locationsFetch = NSFetchRequest(entityName: "Car")
         
         do {
             let fetchedLocation = try moc.executeFetchRequest(locationsFetch)
-            let fetchedLat = fetchedLocation.last!.valueForKey("lat")
-            let fetchedLong = fetchedLocation.last!.valueForKey("long")
-            print("Lat: \(fetchedLat!), Long: \(fetchedLong!)")
+            let fetchedLat = fetchedLocation.last!.valueForKey("lat") as! Double
+            let fetchedLong = fetchedLocation.last!.valueForKey("long") as! Double
+            print("Lat: \(fetchedLat), Long: \(fetchedLong)")
             
 //            for item in fetchedLocation {
 //                let fetchedLat = item.valueForKey("lat")
 //                let fetchedLong = item.valueForKey("long")
 //                print("Lat: \(fetchedLat!), Long: \(fetchedLong!)")
 //            }
+            
+            
+            return (fetchedLat, fetchedLong)
             
             
         } catch {
@@ -134,7 +144,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     @IBAction func loadAction(sender: UIBarButtonItem) {
-        loadLocation()
+        // TODO: would be nice to show current location & saved location @ the same time
+        // this would need a region instead of just coordinates
+        let (lat, long) = loadLocation()
+        updatePinAndMap(lat, longitude: long)
     }
 
     
