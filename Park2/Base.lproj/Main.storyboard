@@ -22,7 +22,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gm-Qa-RH2">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
-                                    <barButtonItem style="done" systemItem="save" id="oKE-2W-wv9">
+                                    <barButtonItem title="Save" style="plain" id="oKE-2W-wv9">
                                         <connections>
                                             <action selector="saveAction:" destination="BYZ-38-t0r" id="uuC-gg-riw"/>
                                         </connections>
