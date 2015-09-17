@@ -112,6 +112,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     // Load data from core data
+    // CRASHES: when nothing is saved
     func loadLocation() -> (Double, Double) {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -141,6 +142,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     @IBAction func loadAction(sender: UIBarButtonItem) {
+        
         
         // TODO: would be nice to show current location & saved location @ the same time
         // this would need a region instead of just coordinates
