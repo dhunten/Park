@@ -15,6 +15,7 @@
 		C3BC16F21BA2467A003AB8C3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3BC16F01BA2467A003AB8C3 /* LaunchScreen.storyboard */; };
 		C3BC16FD1BA2467A003AB8C3 /* Park2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC16FC1BA2467A003AB8C3 /* Park2Tests.swift */; };
 		C3BC17081BA2467B003AB8C3 /* Park2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC17071BA2467B003AB8C3 /* Park2UITests.swift */; };
+		C3DCA2931BAB82D8005415DE /* ParkingSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DCA2921BAB82D8005415DE /* ParkingSpot.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		C3BC17031BA2467A003AB8C3 /* Park2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Park2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3BC17071BA2467B003AB8C3 /* Park2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Park2UITests.swift; sourceTree = "<group>"; };
 		C3BC17091BA2467B003AB8C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C3DCA2921BAB82D8005415DE /* ParkingSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingSpot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			children = (
 				C3BC16E41BA2467A003AB8C3 /* AppDelegate.swift */,
 				C3BC16E61BA2467A003AB8C3 /* ViewController.swift */,
+				C3DCA2921BAB82D8005415DE /* ParkingSpot.swift */,
 				C3BC16E81BA2467A003AB8C3 /* Main.storyboard */,
 				C3BC16EE1BA2467A003AB8C3 /* Assets.xcassets */,
 				C3BC16F01BA2467A003AB8C3 /* LaunchScreen.storyboard */,
@@ -261,6 +264,7 @@
 			files = (
 				C3BC16E71BA2467A003AB8C3 /* ViewController.swift in Sources */,
 				C3BC16ED1BA2467A003AB8C3 /* Park2.xcdatamodeld in Sources */,
+				C3DCA2931BAB82D8005415DE /* ParkingSpot.swift in Sources */,
 				C3BC16E51BA2467A003AB8C3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

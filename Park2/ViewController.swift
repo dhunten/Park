@@ -17,6 +17,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var manager: CLLocationManager!
     var tempLocation = CLLocation()
     let dropPin = MKPointAnnotation()
+    var parkingSpot = ParkingSpot()
 
 
     override func viewDidLoad() {
@@ -155,6 +156,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBAction func refreshAction(sender: UIBarButtonItem) {
         
         refreshLocation()
+        
+        
+        parkingSpot.setReminder()
         
     }
 }
