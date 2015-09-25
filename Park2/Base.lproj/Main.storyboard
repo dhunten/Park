@@ -22,19 +22,13 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gm-Qa-RH2">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
-                                    <barButtonItem title="Save" style="plain" id="oKE-2W-wv9">
+                                    <barButtonItem title="Remember" style="plain" id="oKE-2W-wv9">
                                         <connections>
                                             <action selector="saveAction:" destination="BYZ-38-t0r" id="uuC-gg-riw"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem systemItem="flexibleSpace" id="sfO-0c-qXD"/>
-                                    <barButtonItem title="Load" style="plain" id="thu-4c-s1Z">
-                                        <connections>
-                                            <action selector="loadAction:" destination="BYZ-38-t0r" id="fxd-iL-Hm6"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem systemItem="flexibleSpace" id="Bql-fB-2UM"/>
-                                    <barButtonItem systemItem="refresh" id="PH1-Ya-WRh">
+                                    <barButtonItem title="🌎" id="PH1-Ya-WRh">
                                         <connections>
                                             <action selector="refreshAction:" destination="BYZ-38-t0r" id="r9W-0S-q9Z"/>
                                         </connections>
@@ -54,6 +48,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="mainActionButton" destination="oKE-2W-wv9" id="g0a-KD-EAp"/>
                         <outlet property="mapView" destination="odp-LO-1mO" id="fpi-pm-aJJ"/>
                     </connections>
                 </viewController>

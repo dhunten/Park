@@ -6,32 +6,32 @@
 //  Copyright © 2015 BLOOF INDUSTRIES. All rights reserved.
 //
 
+import UIKit
 import Foundation
 import CoreLocation
-import UIKit
-
+import CoreData
 
 
 class ParkingSpot {
     
-    var coords: CLLocation
+    var coords: CLLocationCoordinate2D
     var reminder: NSDate
-    let notification = UILocalNotification()
+    var moc: NSManagedObjectContext
     
     
-    init(coords: CLLocation, reminder: NSDate) {
+    init(coords: CLLocationCoordinate2D, reminder: NSDate) {
         
         self.coords = coords
         self.reminder = reminder
+        moc = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
         
     }
     
     
-    init() {
+    // Mainly for testing
+    convenience init() {
         
-        // Mainly for testing
-        self.coords = CLLocation(latitude: 0, longitude: 0)
-        self.reminder = NSDate(timeIntervalSinceNow: 15)
+        self.init(coords: CLLocationCoordinate2DMake(0, 0), reminder: NSDate(timeIntervalSinceNow: 15))
         
     }
     
@@ -43,16 +43,48 @@ class ParkingSpot {
         
     }
     
+
+    // Save a location to core data
+    func saveLocation() {
+        
+        // Setup the entry we're inserting into core data
+        let entity = NSEntityDescription.entityForName("Car", inManagedObjectContext: moc)
+        let carManagedObject = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc)
+        
+        // Add the data into the entry
+        carManagedObject.setValue(coords.latitude, forKey: "lat")
+        carManagedObject.setValue(coords.longitude, forKey: "long")
+        
+        print("Attempting to save lat: \(coords.latitude), long: \(coords.longitude)")
+        
+        do {
+            // Save the entry into core data
+            // TODO: just keep one instance of Car, currently it just keeps appending more to core data
+            try moc.save()
+        } catch {
+            fatalError("Failure to save context: \(error)")
+        }
+    }
     
-    func setReminder() {
+    
+    // Load data from core data
+    func loadLocation() {
         
-        // create a local notification
-        notification.alertBody = "Move your car!"
-        notification.alertAction = "see your car's location"
-        notification.fireDate = self.reminder
-        notification.category = "CAR_CATEGORY"
-        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        let locationsFetch = NSFetchRequest(entityName: "Car")
         
+        do {
+            let fetchedLocation = try moc.executeFetchRequest(locationsFetch)
+            
+            if let fetchedLong = fetchedLocation.last?.valueForKey("long") as? Double, fetchedLat = fetchedLocation.last?.valueForKey("lat") as? Double {
+                
+                print("Loading Lat: \(fetchedLat), Long: \(fetchedLong)")
+                coords = CLLocationCoordinate2DMake(fetchedLat, fetchedLong)
+                
+            }
+            
+        } catch {
+            fatalError("Failed to fetch: \(error)")
+        }
     }
     
 }

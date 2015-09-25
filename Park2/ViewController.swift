@@ -14,64 +14,86 @@ import CoreData
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
-    var manager: CLLocationManager!
-    var tempLocation = CLLocation()
-    let dropPin = MKPointAnnotation()
+    @IBOutlet weak var mainActionButton: UIBarButtonItem!
     var parkingSpot = ParkingSpot()
+    var parkingSpotView = ParkingSpotView()
+    var manager: CLLocationManager!
+    var userLocation = CLLocationCoordinate2D()
+    
+    // we should be able to do this as an optional for ParkingSpot.coords
+    var isParkingSpotSaved = true
 
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        // Setup our Map View
+
         mapView.delegate = self
         
-        // Setup our Location Manager
         manager = CLLocationManager()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.distanceFilter = 25 //meters
         manager.requestWhenInUseAuthorization()
         
-        // Ask for our location
-        refreshLocation()
+        loadCoords()
+        updateMapView(parkingSpot.coords, pin: parkingSpotView.dropPin)
         
+        if (isParkingSpotSaved) {
+            mainActionButton.title = "Forget"
+        }
     }
     
+
     
-    func refreshLocation() {
+    @IBAction func saveAction(sender: UIBarButtonItem) {
+        
+        if (isParkingSpotSaved) {
+            
+            // Forget loc
+            updateMapView(parkingSpot.coords, pin: nil)
+            mainActionButton.title = "Remember"
+            
+        } else {
+            
+            // Remember new loc
+            parkingSpot.saveLocation()
+            updateMapView(parkingSpot.coords, pin: parkingSpotView.dropPin)
+            mainActionButton.title = "Forget"
+        }
+        isParkingSpotSaved = !isParkingSpotSaved
+    }
+    
+
+    
+    @IBAction func refreshAction(sender: UIBarButtonItem) {
         
         manager.requestLocation()
+        parkingSpotView.setReminder(parkingSpot.reminder)
         
     }
     
-    
-    
-    func updatePinAndMap(latitude: Double, longitude: Double) {
-        
-        // Update the map's viewable region
-        let newLocation = CLLocation(latitude: latitude, longitude: longitude)
-        let regionRadius: CLLocationDistance = 10
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, regionRadius * 2.0, regionRadius * 2.0)
-        mapView.setRegion(coordinateRegion, animated: true)
-        
-        // Drop a pin at current location
-        dropPin.coordinate = newLocation.coordinate
-        dropPin.title = "My Parking Spot"
-        mapView.addAnnotation(dropPin)
-    }
-    
-    
+
     
     // When GPS data is returned
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        print("\(locations[0])")
-        tempLocation = locations[0]
-        
-        updatePinAndMap(tempLocation.coordinate.latitude, longitude: tempLocation.coordinate.longitude)
+        //print("\(locations[0])")
+        userLocation = locations[0].coordinate
 
+        //parkingSpotView.dropPin.coordinate = parkingSpot.coords
+        parkingSpotView.dropPin.title = title
+
+        if (isParkingSpotSaved) {
+            
+            updateMapView(userLocation, pin: parkingSpotView.dropPin)
+            
+            print("\(parkingSpot.coords) &&&& \(parkingSpotView.dropPin.coordinate)")
+            
+        } else {
+            
+            updateMapView(userLocation, pin: nil)
+        }
     }
     
     
@@ -83,83 +105,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
-    
-    
-    // Save a location to core data
-    func saveLocation(location: CLLocation) {
+    func updateMapView(centerCoords: CLLocationCoordinate2D, pin: MKAnnotation?) {
         
-        // Setup the managed object context (core data)
-        let moc = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-        
-        // Setup the entry we're inserting into core data
-        let entity = NSEntityDescription.entityForName("Car", inManagedObjectContext: moc)
-        let carManagedObject = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc)
-        
-        // Add the data into the entry
-        carManagedObject.setValue(location.coordinate.latitude, forKey: "lat")
-        carManagedObject.setValue(location.coordinate.longitude, forKey: "long")
-        
-        print("Attempting to save lat: \(location.coordinate.latitude), long: \(location.coordinate.longitude)")
-        
-        do {
-            // Save the entry into core data
-            // TODO: just keep one instance of Car, currently it just keeps appending more to core data
-            try moc.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
-    }
-    
-    
-    
-    // Load data from core data
-    // CRASHES: when nothing is saved
-    func loadLocation() -> (Double, Double) {
-        
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let moc = appDelegate.managedObjectContext
-        let locationsFetch = NSFetchRequest(entityName: "Car")
-        
-        do {
-            let fetchedLocation = try moc.executeFetchRequest(locationsFetch)
-            let fetchedLat = fetchedLocation.last!.valueForKey("lat") as! Double
-            let fetchedLong = fetchedLocation.last!.valueForKey("long") as! Double
-            print("Lat: \(fetchedLat), Long: \(fetchedLong)")
-            
-            return (fetchedLat, fetchedLong)
-            
-        } catch {
-            fatalError("Failed to fetch: \(error)")
-        }
-    }
-    
-    
-    
-    @IBAction func saveAction(sender: UIBarButtonItem) {
-        
-        saveLocation(tempLocation)
-        
-    }
-    
-    
-    @IBAction func loadAction(sender: UIBarButtonItem) {
-        
-        
-        // TODO: would be nice to show current location & saved location @ the same time
-        // this would need a region instead of just coordinates
-        let (lat, long) = loadLocation()
-        updatePinAndMap(lat, longitude: long)
-        
-    }
+        if let 📍 = pin {
 
-    
-    @IBAction func refreshAction(sender: UIBarButtonItem) {
-        
-        refreshLocation()
-        
-        
-        parkingSpot.setReminder()
+            let p1 = MKMapPointForCoordinate(📍.coordinate)
+            let p2 = MKMapPointForCoordinate(centerCoords)
+            let mapRect = MKMapRectMake(fmin(p1.x,p2.x), fmin(p1.y,p2.y), fabs(p1.x-p2.x), fabs(p1.y-p2.y)) // bc the MapRect only expands to the right & up
+            
+            mapView.addAnnotation(📍)
+            mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
+            
+        } else {
+            
+            let coordinateRegion = MKCoordinateRegionMakeWithDistance(centerCoords, 20.0,  20.0)
+            mapView.setRegion(coordinateRegion, animated: true)
+            mapView.removeAnnotation(parkingSpotView.dropPin)
+            
+        }
         
     }
+    
+    
+    func loadCoords() {
+        parkingSpot.loadLocation()
+        parkingSpotView.dropPin.coordinate = parkingSpot.coords
+    }
+    
 }
+
 
