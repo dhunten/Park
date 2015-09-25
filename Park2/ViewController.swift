@@ -19,9 +19,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var parkingSpotView = ParkingSpotView()
     var manager: CLLocationManager!
     var userLocation = CLLocationCoordinate2D()
-    
-    // we should be able to do this as an optional for ParkingSpot.coords
-    var isParkingSpotSaved = true
 
 
     override func viewDidLoad() {
@@ -37,9 +34,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         manager.requestWhenInUseAuthorization()
         
         loadCoords()
-        updateMapView(parkingSpot.coords, pin: parkingSpotView.dropPin)
+        manager.requestLocation()
         
-        if (isParkingSpotSaved) {
+        if let _ = parkingSpotView.dropPin {
             mainActionButton.title = "Forget"
         }
     }
@@ -48,20 +45,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBAction func saveAction(sender: UIBarButtonItem) {
         
-        if (isParkingSpotSaved) {
+        if let _ = parkingSpotView.dropPin  {
             
             // Forget loc
-            updateMapView(parkingSpot.coords, pin: nil)
+            mapView.removeAnnotation(parkingSpotView.dropPin!) //dangerous unwrap
+            parkingSpotView.dropPin = nil
+            updateMapView(userLocation, pin: nil)
             mainActionButton.title = "Remember"
             
         } else {
             
             // Remember new loc
-            parkingSpot.saveLocation()
-            updateMapView(parkingSpot.coords, pin: parkingSpotView.dropPin)
+            // FIX: it's saving 0,0 everytime :(
+            parkingSpot.saveLocation(userLocation)
+            parkingSpotView.savePin(userLocation)
+            updateMapView(userLocation, pin: parkingSpotView.dropPin)
             mainActionButton.title = "Forget"
         }
-        isParkingSpotSaved = !isParkingSpotSaved
+
     }
     
 
@@ -82,13 +83,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         userLocation = locations[0].coordinate
 
         //parkingSpotView.dropPin.coordinate = parkingSpot.coords
-        parkingSpotView.dropPin.title = title
+        parkingSpotView.dropPin?.title = title
 
-        if (isParkingSpotSaved) {
+        if let _ = parkingSpotView.dropPin {
             
             updateMapView(userLocation, pin: parkingSpotView.dropPin)
             
-            print("\(parkingSpot.coords) &&&& \(parkingSpotView.dropPin.coordinate)")
+            print("GPS return. UserLoc: \(userLocation), pin: \(parkingSpotView.dropPin?.coordinate)")
             
         } else {
             
@@ -120,7 +121,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             let coordinateRegion = MKCoordinateRegionMakeWithDistance(centerCoords, 20.0,  20.0)
             mapView.setRegion(coordinateRegion, animated: true)
-            mapView.removeAnnotation(parkingSpotView.dropPin)
+            
+
             
         }
         
@@ -129,7 +131,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     func loadCoords() {
         parkingSpot.loadLocation()
-        parkingSpotView.dropPin.coordinate = parkingSpot.coords
+        parkingSpotView.savePin(parkingSpot.coords)
     }
     
 }

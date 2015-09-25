@@ -10,24 +10,19 @@ import UIKit
 import CoreLocation
 import MapKit
 
-class ParkingSpotView: NSObject, CLLocationManagerDelegate {
+class ParkingSpotView: NSObject {
 
-    // Here we should
-    // • Schedule Notifications
-    // • Map interactions
-    // • Location interactionw
 
     let notification: UILocalNotification
-    let dropPin: MKPointAnnotation
+    var dropPin: MKPointAnnotation?
     
 
     override init() {
 
         notification = UILocalNotification()
-        dropPin = MKPointAnnotation()
+        dropPin = nil
 
         super.init()
-
         
     }
     
@@ -44,15 +39,10 @@ class ParkingSpotView: NSObject, CLLocationManagerDelegate {
     }
     
     
-    
-
-    
-    
-    // Wrap location manager request
-    func refreshLocation() {
+    func savePin(location: CLLocationCoordinate2D) {
         
-//        manager.requestLocation()
-        
+        dropPin = MKPointAnnotation()
+        dropPin?.coordinate = location
     }
     
     

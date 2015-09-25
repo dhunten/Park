@@ -45,7 +45,10 @@ class ParkingSpot {
     
 
     // Save a location to core data
-    func saveLocation() {
+    func saveLocation(location: CLLocationCoordinate2D) {
+        
+        // Set the parking spot coordinates to the new one
+        coords = location
         
         // Setup the entry we're inserting into core data
         let entity = NSEntityDescription.entityForName("Car", inManagedObjectContext: moc)
