@@ -7,7 +7,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Park2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Park" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -28,7 +28,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem systemItem="flexibleSpace" id="sfO-0c-qXD"/>
-                                    <barButtonItem title="🌎" id="PH1-Ya-WRh">
+                                    <barButtonItem image="ic_navigation" id="PH1-Ya-WRh">
                                         <connections>
                                             <action selector="refreshAction:" destination="BYZ-38-t0r" id="r9W-0S-q9Z"/>
                                         </connections>
@@ -57,4 +57,7 @@
             <point key="canvasLocation" x="305" y="429"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ic_navigation" width="24" height="24"/>
+    </resources>
 </document>

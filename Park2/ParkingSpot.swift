@@ -17,12 +17,14 @@ class ParkingSpot {
     var coords: CLLocationCoordinate2D
     var reminder: NSDate
     var moc: NSManagedObjectContext
+    var carManagedObject: [AnyObject]
     
     
     init(coords: CLLocationCoordinate2D, reminder: NSDate) {
         
         self.coords = coords
         self.reminder = reminder
+        self.carManagedObject = []
         moc = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
         
     }
@@ -74,11 +76,14 @@ class ParkingSpot {
     func loadLocation() {
         
         let locationsFetch = NSFetchRequest(entityName: "Car")
+        locationsFetch.fetchLimit = 1
         
         do {
-            let fetchedLocation = try moc.executeFetchRequest(locationsFetch)
             
-            if let fetchedLong = fetchedLocation.last?.valueForKey("long") as? Double, fetchedLat = fetchedLocation.last?.valueForKey("lat") as? Double {
+            carManagedObject = try moc.executeFetchRequest(locationsFetch)
+            print(carManagedObject.first?.objectID)
+            
+            if let fetchedLong = carManagedObject.first?.valueForKey("long") as? Double, fetchedLat = carManagedObject.first?.valueForKey("lat") as? Double {
                 
                 print("Loading Lat: \(fetchedLat), Long: \(fetchedLong)")
                 coords = CLLocationCoordinate2DMake(fetchedLat, fetchedLong)
@@ -91,3 +96,6 @@ class ParkingSpot {
     }
     
 }
+
+
+

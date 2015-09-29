@@ -6,6 +6,9 @@
 //  Copyright © 2015 BLOOF INDUSTRIES. All rights reserved.
 //
 
+//let interval = ["Every","1st","2nd","3rd","4th","1st & 3rd","2nd & 4th"]
+//let day = ["Monday","Tuesday","Wednesday","Thursday","Friday"]
+
 import UIKit
 import CoreLocation
 import MapKit
@@ -48,7 +51,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if let _ = parkingSpotView.dropPin  {
             
             // Forget loc
-            mapView.removeAnnotation(parkingSpotView.dropPin!) //dangerous unwrap
+            mapView.removeAnnotation(parkingSpotView.dropPin!)
             parkingSpotView.dropPin = nil
             updateMapView(userLocation, pin: nil)
             mainActionButton.title = "Remember"
@@ -56,7 +59,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         } else {
             
             // Remember new loc
-            // FIX: it's saving 0,0 everytime :(
             parkingSpot.saveLocation(userLocation)
             parkingSpotView.savePin(userLocation)
             updateMapView(userLocation, pin: parkingSpotView.dropPin)
@@ -122,14 +124,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let coordinateRegion = MKCoordinateRegionMakeWithDistance(centerCoords, 20.0,  20.0)
             mapView.setRegion(coordinateRegion, animated: true)
             
-
-            
         }
         
     }
     
     
     func loadCoords() {
+        
         parkingSpot.loadLocation()
         parkingSpotView.savePin(parkingSpot.coords)
     }
