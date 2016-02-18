@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
@@ -18,9 +18,11 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="odp-LO-1mO">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gm-Qa-RH2">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <animations/>
                                 <items>
                                     <barButtonItem title="Remember" style="plain" id="oKE-2W-wv9">
                                         <connections>
@@ -28,14 +30,23 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem systemItem="flexibleSpace" id="sfO-0c-qXD"/>
-                                    <barButtonItem image="ic_navigation" id="PH1-Ya-WRh">
+                                    <barButtonItem image="NavArrow" id="PH1-Ya-WRh">
                                         <connections>
                                             <action selector="refreshAction:" destination="BYZ-38-t0r" id="r9W-0S-q9Z"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MFT-7u-KEd">
+                                <rect key="frame" x="270" y="480" width="60" height="60"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="nj7-Sn-Q5V"/>
+                                </constraints>
+                                <state key="normal" image="Add"/>
+                            </button>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="5gm-Qa-RH2" firstAttribute="leading" secondItem="odp-LO-1mO" secondAttribute="leading" id="GQK-KL-sUq"/>
@@ -43,8 +54,10 @@
                             <constraint firstItem="odp-LO-1mO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="QaF-Lc-ecO"/>
                             <constraint firstAttribute="trailing" secondItem="odp-LO-1mO" secondAttribute="trailing" id="VZ2-kw-GPT"/>
                             <constraint firstItem="5gm-Qa-RH2" firstAttribute="trailing" secondItem="odp-LO-1mO" secondAttribute="trailing" id="Wmr-Ix-Bxt"/>
+                            <constraint firstItem="MFT-7u-KEd" firstAttribute="centerX" secondItem="5gm-Qa-RH2" secondAttribute="centerX" id="Wts-Y7-shD"/>
                             <constraint firstItem="5gm-Qa-RH2" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="btC-nh-CBp"/>
                             <constraint firstItem="odp-LO-1mO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="iTj-KR-MuK"/>
+                            <constraint firstItem="5gm-Qa-RH2" firstAttribute="top" secondItem="MFT-7u-KEd" secondAttribute="bottom" constant="16" id="qzI-sV-zjO"/>
                         </constraints>
                     </view>
                     <connections>
@@ -58,6 +71,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_navigation" width="24" height="24"/>
+        <image name="Add" width="40" height="60"/>
+        <image name="NavArrow" width="24" height="24"/>
     </resources>
 </document>

@@ -10,7 +10,6 @@
 		C3BC16E51BA2467A003AB8C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC16E41BA2467A003AB8C3 /* AppDelegate.swift */; };
 		C3BC16E71BA2467A003AB8C3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC16E61BA2467A003AB8C3 /* ViewController.swift */; };
 		C3BC16EA1BA2467A003AB8C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3BC16E81BA2467A003AB8C3 /* Main.storyboard */; };
-		C3BC16ED1BA2467A003AB8C3 /* Park2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C3BC16EB1BA2467A003AB8C3 /* Park2.xcdatamodeld */; };
 		C3BC16EF1BA2467A003AB8C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3BC16EE1BA2467A003AB8C3 /* Assets.xcassets */; };
 		C3BC16F21BA2467A003AB8C3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3BC16F01BA2467A003AB8C3 /* LaunchScreen.storyboard */; };
 		C3BC16FD1BA2467A003AB8C3 /* Park2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC16FC1BA2467A003AB8C3 /* Park2Tests.swift */; };
@@ -41,7 +40,6 @@
 		C3BC16E41BA2467A003AB8C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3BC16E61BA2467A003AB8C3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C3BC16E91BA2467A003AB8C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		C3BC16EC1BA2467A003AB8C3 /* Park2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Park2.xcdatamodel; sourceTree = "<group>"; };
 		C3BC16EE1BA2467A003AB8C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C3BC16F11BA2467A003AB8C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C3BC16F31BA2467A003AB8C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -112,7 +110,6 @@
 				C3BC16EE1BA2467A003AB8C3 /* Assets.xcassets */,
 				C3BC16F01BA2467A003AB8C3 /* LaunchScreen.storyboard */,
 				C3BC16F31BA2467A003AB8C3 /* Info.plist */,
-				C3BC16EB1BA2467A003AB8C3 /* Park2.xcdatamodeld */,
 			);
 			path = Park2;
 			sourceTree = "<group>";
@@ -267,7 +264,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3BC16E71BA2467A003AB8C3 /* ViewController.swift in Sources */,
-				C3BC16ED1BA2467A003AB8C3 /* Park2.xcdatamodeld in Sources */,
 				C3DCA2931BAB82D8005415DE /* ParkingSpot.swift in Sources */,
 				C3DCA2991BAC8F8A005415DE /* ParkingSpotView.swift in Sources */,
 				C3BC16E51BA2467A003AB8C3 /* AppDelegate.swift in Sources */,
@@ -414,7 +410,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Park2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Park2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloofindustries.park;
 				PRODUCT_NAME = Park;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -429,7 +425,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Park2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Park2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloofindustries.park;
 				PRODUCT_NAME = Park;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -526,19 +522,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		C3BC16EB1BA2467A003AB8C3 /* Park2.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				C3BC16EC1BA2467A003AB8C3 /* Park2.xcdatamodel */,
-			);
-			currentVersion = C3BC16EC1BA2467A003AB8C3 /* Park2.xcdatamodel */;
-			path = Park2.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = C3BC16D91BA2467A003AB8C3 /* Project object */;
 }

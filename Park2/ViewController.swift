@@ -48,6 +48,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBAction func saveAction(sender: UIBarButtonItem) {
         
+        // Is there a pin on the map?
         if let _ = parkingSpotView.dropPin  {
             
             // Forget loc
@@ -59,10 +60,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         } else {
             
             // Remember new loc
-            parkingSpot.saveLocation(userLocation)
             parkingSpotView.savePin(userLocation)
             updateMapView(userLocation, pin: parkingSpotView.dropPin)
             mainActionButton.title = "Forget"
+            parkingSpot.coords = userLocation
+            
+            // Save to file
+            let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(parkingSpot, toFile: ParkingSpot.ArchiveURL.path!)
+            if isSuccessfulSave {
+                print("Saved!", parkingSpot.coords)
+            }
         }
 
     }
@@ -85,13 +92,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         userLocation = locations[0].coordinate
 
         //parkingSpotView.dropPin.coordinate = parkingSpot.coords
-        parkingSpotView.dropPin?.title = title
+        //parkingSpotView.dropPin?.title = title
 
         if let _ = parkingSpotView.dropPin {
             
             updateMapView(userLocation, pin: parkingSpotView.dropPin)
-            
-            print("GPS return. UserLoc: \(userLocation), pin: \(parkingSpotView.dropPin?.coordinate)")
+            //print("GPS return. UserLoc: \(userLocation), pin: \(parkingSpotView.dropPin?.coordinate)")
             
         } else {
             
@@ -131,8 +137,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     func loadCoords() {
         
-        parkingSpot.loadLocation()
-        parkingSpotView.savePin(parkingSpot.coords)
+        // Load from file
+        parkingSpot = NSKeyedUnarchiver.unarchiveObjectWithFile(ParkingSpot.ArchiveURL.path!) as! ParkingSpot
+        print("Loaded", parkingSpot.coords)
+        
+        // If loaded a real coord, put the Pin there
+        if (parkingSpot.coords.longitude != 0) {
+            
+            parkingSpotView.savePin(parkingSpot.coords)
+        }
     }
     
 }

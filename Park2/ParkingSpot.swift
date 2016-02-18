@@ -12,26 +12,42 @@ import CoreLocation
 import CoreData
 
 
-class ParkingSpot {
+
+@objc(CarMO)
+class CarMO: NSManagedObject {
+    
+    @NSManaged var lat: Double
+    @NSManaged var long: Double
+    
+}
+
+
+
+
+class ParkingSpot: NSObject, NSCoding {
     
     var coords: CLLocationCoordinate2D
     var reminder: NSDate
-    var moc: NSManagedObjectContext
-    var carManagedObject: [AnyObject]
+    
+    // MARK: Archiving Paths
+    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("park")
     
     
     init(coords: CLLocationCoordinate2D, reminder: NSDate) {
         
         self.coords = coords
         self.reminder = reminder
-        self.carManagedObject = []
-        moc = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        
+        // should possibly verify the variables are OK
+        
+        super.init()
         
     }
     
     
     // Mainly for testing
-    convenience init() {
+    convenience override init() {
         
         self.init(coords: CLLocationCoordinate2DMake(0, 0), reminder: NSDate(timeIntervalSinceNow: 15))
         
@@ -46,56 +62,40 @@ class ParkingSpot {
     }
     
 
-    // Save a location to core data
+    // Save a location vis NSCoding
     func saveLocation(location: CLLocationCoordinate2D) {
         
-        // Set the parking spot coordinates to the new one
-        coords = location
+
         
-        // Setup the entry we're inserting into core data
-        let entity = NSEntityDescription.entityForName("Car", inManagedObjectContext: moc)
-        let carManagedObject = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc)
-        
-        // Add the data into the entry
-        carManagedObject.setValue(coords.latitude, forKey: "lat")
-        carManagedObject.setValue(coords.longitude, forKey: "long")
-        
-        print("Attempting to save lat: \(coords.latitude), long: \(coords.longitude)")
-        
-        do {
-            // Save the entry into core data
-            // TODO: just keep one instance of Car, currently it just keeps appending more to core data
-            try moc.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
     }
     
     
     // Load data from core data
     func loadLocation() {
         
-        let locationsFetch = NSFetchRequest(entityName: "Car")
-        locationsFetch.fetchLimit = 1
+
         
-        do {
-            
-            carManagedObject = try moc.executeFetchRequest(locationsFetch)
-            print(carManagedObject.first?.objectID)
-            
-            if let fetchedLong = carManagedObject.first?.valueForKey("long") as? Double, fetchedLat = carManagedObject.first?.valueForKey("lat") as? Double {
-                
-                print("Loading Lat: \(fetchedLat), Long: \(fetchedLong)")
-                coords = CLLocationCoordinate2DMake(fetchedLat, fetchedLong)
-                
-            }
-            
-        } catch {
-            fatalError("Failed to fetch: \(error)")
-        }
+    }
+    
+    // MARK: NSCoding
+    func encodeWithCoder(aCoder: NSCoder) {
+        
+        aCoder.encodeObject(coords.latitude, forKey: "latitude")
+        aCoder.encodeObject(coords.longitude, forKey: "longitude")
+        aCoder.encodeObject(reminder, forKey: "reminder")
+        
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        
+        let lat = aDecoder.decodeObjectForKey("latitude") as! CLLocationDegrees
+        let long = aDecoder.decodeObjectForKey("longitude") as! CLLocationDegrees
+        let coords = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        let reminder = aDecoder.decodeObjectForKey("reminder") as! NSDate
+        
+        self.init(coords: coords, reminder: reminder)
+    
     }
     
 }
-
-
 
