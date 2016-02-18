@@ -56,6 +56,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             parkingSpotView.dropPin = nil
             updateMapView(userLocation, pin: nil)
             mainActionButton.title = "Remember"
+            parkingSpot.coords = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+            saveToFile()
             
         } else {
             
@@ -64,12 +66,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             updateMapView(userLocation, pin: parkingSpotView.dropPin)
             mainActionButton.title = "Forget"
             parkingSpot.coords = userLocation
-            
-            // Save to file
-            let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(parkingSpot, toFile: ParkingSpot.ArchiveURL.path!)
-            if isSuccessfulSave {
-                print("Saved!", parkingSpot.coords)
-            }
+            saveToFile()
         }
 
     }
@@ -138,14 +135,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func loadCoords() {
         
         // Load from file
-        parkingSpot = NSKeyedUnarchiver.unarchiveObjectWithFile(ParkingSpot.ArchiveURL.path!) as! ParkingSpot
-        print("Loaded", parkingSpot.coords)
+        if let ps = NSKeyedUnarchiver.unarchiveObjectWithFile(ParkingSpot.ArchiveURL.path!) as? ParkingSpot {
+            
+            parkingSpot = ps
+            print("Loaded", parkingSpot.coords)
+            
+        }
         
         // If loaded a real coord, put the Pin there
         if (parkingSpot.coords.longitude != 0) {
             
             parkingSpotView.savePin(parkingSpot.coords)
+            
         }
+    }
+    
+    func saveToFile() {
+        
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(parkingSpot, toFile: ParkingSpot.ArchiveURL.path!)
+        if isSuccessfulSave {
+            
+            print("Saved!", parkingSpot.coords)
+            
+        }
+        
     }
     
 }
