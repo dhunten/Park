@@ -18,15 +18,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mainActionButton: UIBarButtonItem!
+    @IBOutlet weak var reminderDatePicker: UIDatePicker!
     var parkingSpot = ParkingSpot()
     var parkingSpotView = ParkingSpotView()
     var manager: CLLocationManager!
     var userLocation = CLLocationCoordinate2D()
+    let dateFormatter = NSDateFormatter()
 
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        reminderDatePicker.minimumDate = NSDate(timeIntervalSinceNow: 0)
+        dateFormatter.dateStyle = .FullStyle
+        dateFormatter.timeStyle = .ShortStyle
 
         mapView.delegate = self
         
@@ -57,17 +63,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             updateMapView(userLocation, pin: nil)
             mainActionButton.title = "Remember"
             parkingSpot.coords = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-            saveToFile()
+            reminderDatePicker.minimumDate = NSDate(timeIntervalSinceNow: 0)
             
         } else {
             
             // Remember new loc
-            parkingSpotView.savePin(userLocation)
+            parkingSpot.reminder = reminderDatePicker.date
+            let dateString = dateFormatter.stringFromDate(parkingSpot.reminder)
+            parkingSpotView.savePin(userLocation, title: dateString)
             updateMapView(userLocation, pin: parkingSpotView.dropPin)
             mainActionButton.title = "Forget"
             parkingSpot.coords = userLocation
-            saveToFile()
+            parkingSpotView.setReminder(parkingSpot.reminder)
+            
         }
+        
+        saveToFile()
 
     }
     
@@ -76,7 +87,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBAction func refreshAction(sender: UIBarButtonItem) {
         
         manager.requestLocation()
-        parkingSpotView.setReminder(parkingSpot.reminder)
         
     }
     
@@ -85,16 +95,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     // When GPS data is returned
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        //print("\(locations[0])")
         userLocation = locations[0].coordinate
-
-        //parkingSpotView.dropPin.coordinate = parkingSpot.coords
-        //parkingSpotView.dropPin?.title = title
 
         if let _ = parkingSpotView.dropPin {
             
             updateMapView(userLocation, pin: parkingSpotView.dropPin)
-            //print("GPS return. UserLoc: \(userLocation), pin: \(parkingSpotView.dropPin?.coordinate)")
             
         } else {
             
@@ -145,7 +150,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // If loaded a real coord, put the Pin there
         if (parkingSpot.coords.longitude != 0) {
             
-            parkingSpotView.savePin(parkingSpot.coords)
+            let dateString = dateFormatter.stringFromDate(reminderDatePicker.date)
+            parkingSpotView.savePin(parkingSpot.coords, title: dateString)
             
         }
     }

@@ -20,6 +20,9 @@ class ParkingSpotView: NSObject {
     override init() {
 
         notification = UILocalNotification()
+        notification.alertBody = "Move your car!"
+        notification.alertAction = "See your car's location"
+        notification.category = "CAR_CATEGORY"
         dropPin = nil
 
         super.init()
@@ -30,19 +33,25 @@ class ParkingSpotView: NSObject {
     func setReminder(reminder: NSDate) {
         
         // create a local notification
-        notification.alertBody = "Move your car!"
-        notification.alertAction = "see your car's location"
         notification.fireDate = reminder
-        notification.category = "CAR_CATEGORY"
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        print("Reminder date: ", reminder.description)
+        
+    }
+    
+    func cancletReminder() {
+        
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
         
     }
     
     
-    func savePin(location: CLLocationCoordinate2D) {
+    func savePin(location: CLLocationCoordinate2D, title: String) {
         
         dropPin = MKPointAnnotation()
         dropPin?.coordinate = location
+        dropPin?.title = title
+        
     }
     
     

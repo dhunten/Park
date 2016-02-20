@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="odp-LO-1mO">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="191" width="600" height="409"/>
                                 <animations/>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gm-Qa-RH2">
@@ -45,24 +45,38 @@
                                 </constraints>
                                 <state key="normal" image="Add"/>
                             </button>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="10" translatesAutoresizingMaskIntoConstraints="NO" id="Dc1-4Z-HHy">
+                                <rect key="frame" x="0.0" y="20" width="600" height="163"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="163" id="iBZ-Pv-zBU"/>
+                                </constraints>
+                                <date key="date" timeIntervalSinceReferenceDate="477596024.26006597">
+                                    <!--2016-02-19 17:33:44 +0000-->
+                                </date>
+                            </datePicker>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="5gm-Qa-RH2" firstAttribute="leading" secondItem="odp-LO-1mO" secondAttribute="leading" id="GQK-KL-sUq"/>
-                            <constraint firstItem="odp-LO-1mO" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="KSF-hK-QlI"/>
-                            <constraint firstItem="odp-LO-1mO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="QaF-Lc-ecO"/>
-                            <constraint firstAttribute="trailing" secondItem="odp-LO-1mO" secondAttribute="trailing" id="VZ2-kw-GPT"/>
-                            <constraint firstItem="5gm-Qa-RH2" firstAttribute="trailing" secondItem="odp-LO-1mO" secondAttribute="trailing" id="Wmr-Ix-Bxt"/>
+                            <constraint firstItem="Dc1-4Z-HHy" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="7sa-Kj-Qdr"/>
+                            <constraint firstAttribute="trailing" secondItem="odp-LO-1mO" secondAttribute="trailing" id="CE7-9j-DXI"/>
+                            <constraint firstItem="odp-LO-1mO" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="CdV-eG-Ndl"/>
+                            <constraint firstItem="odp-LO-1mO" firstAttribute="leading" secondItem="5gm-Qa-RH2" secondAttribute="leading" id="D37-jd-kGC"/>
+                            <constraint firstItem="odp-LO-1mO" firstAttribute="top" secondItem="Dc1-4Z-HHy" secondAttribute="bottom" constant="8" symbolic="YES" id="FAA-uO-WEz"/>
+                            <constraint firstItem="odp-LO-1mO" firstAttribute="leading" secondItem="Dc1-4Z-HHy" secondAttribute="leading" id="Fms-f4-up0"/>
+                            <constraint firstItem="odp-LO-1mO" firstAttribute="trailing" secondItem="5gm-Qa-RH2" secondAttribute="trailing" id="JGY-OF-ShJ"/>
+                            <constraint firstItem="odp-LO-1mO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="N3y-XY-o1w"/>
                             <constraint firstItem="MFT-7u-KEd" firstAttribute="centerX" secondItem="5gm-Qa-RH2" secondAttribute="centerX" id="Wts-Y7-shD"/>
                             <constraint firstItem="5gm-Qa-RH2" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="btC-nh-CBp"/>
-                            <constraint firstItem="odp-LO-1mO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="iTj-KR-MuK"/>
+                            <constraint firstItem="Dc1-4Z-HHy" firstAttribute="trailing" secondItem="5gm-Qa-RH2" secondAttribute="trailing" id="dge-PG-Jd8"/>
                             <constraint firstItem="5gm-Qa-RH2" firstAttribute="top" secondItem="MFT-7u-KEd" secondAttribute="bottom" constant="16" id="qzI-sV-zjO"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="mainActionButton" destination="oKE-2W-wv9" id="g0a-KD-EAp"/>
                         <outlet property="mapView" destination="odp-LO-1mO" id="fpi-pm-aJJ"/>
+                        <outlet property="reminderDatePicker" destination="Dc1-4Z-HHy" id="CXz-x7-vaB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
