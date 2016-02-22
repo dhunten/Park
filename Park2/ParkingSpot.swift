@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import CoreLocation
-import CoreData
 
 
 // Model?
@@ -17,6 +16,7 @@ class ParkingSpot: NSObject, NSCoding {
     
     var coords: CLLocationCoordinate2D
     var reminder: NSDate
+
     
     
     // MARK: Archiving Paths
@@ -28,6 +28,8 @@ class ParkingSpot: NSObject, NSCoding {
         
         self.coords = coords
         self.reminder = reminder
+        
+
         
         // should possibly verify the variables are OK
         
@@ -51,41 +53,40 @@ class ParkingSpot: NSObject, NSCoding {
         
     }
     
-
-    // Save a location vis NSCoding
-    func saveLocation() {
-        
-
-        
-    }
     
+    // MARK: Types
     
-    // Load data
-    func loadLocation() {
-        
-
-        
+    struct PropertyKey {
+        static let latitudeKey = "latitude"
+        static let longitudeKey = "longitude"
+        static let reminderKey = "reminder"
     }
+
     
     // MARK: NSCoding
+    
     func encodeWithCoder(aCoder: NSCoder) {
         
-        aCoder.encodeObject(coords.latitude, forKey: "latitude")
-        aCoder.encodeObject(coords.longitude, forKey: "longitude")
-        aCoder.encodeObject(reminder, forKey: "reminder")
+        aCoder.encodeObject(coords.latitude, forKey: PropertyKey.latitudeKey)
+        aCoder.encodeObject(coords.longitude, forKey: PropertyKey.longitudeKey)
+        aCoder.encodeObject(reminder, forKey: PropertyKey.reminderKey)
         
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
         
-        let lat = aDecoder.decodeObjectForKey("latitude") as! CLLocationDegrees
-        let long = aDecoder.decodeObjectForKey("longitude") as! CLLocationDegrees
+        let lat = aDecoder.decodeObjectForKey(PropertyKey.latitudeKey) as! CLLocationDegrees
+        let long = aDecoder.decodeObjectForKey(PropertyKey.longitudeKey) as! CLLocationDegrees
+        let reminder = aDecoder.decodeObjectForKey(PropertyKey.reminderKey) as! NSDate
         let coords = CLLocationCoordinate2D(latitude: lat, longitude: long)
-        let reminder = aDecoder.decodeObjectForKey("reminder") as! NSDate
         
         self.init(coords: coords, reminder: reminder)
     
     }
+    
+    
+    
+
     
 }
 

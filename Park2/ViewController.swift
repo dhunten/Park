@@ -16,10 +16,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBOutlet weak var mainActionButton: UIBarButtonItem!
     @IBOutlet weak var reminderDatePicker: UIDatePicker!
     var parkingSpot = ParkingSpot()
-    var parkingSpotView = ParkingSpotView()
     var manager: CLLocationManager!
     var userLocation = CLLocationCoordinate2D()
     let dateFormatter = NSDateFormatter()
+    let notification = UILocalNotification()
+    var dropPin: MKPointAnnotation?
 
 
     override func viewDidLoad() {
@@ -38,10 +39,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         manager.distanceFilter = 25 //meters
         manager.requestWhenInUseAuthorization()
         
+        notification.alertBody = "Move your car!"
+        notification.alertAction = "See your car's location"
+        notification.category = "CAR_CATEGORY"
+        
+        dropPin = nil
+        
         loadCoords()
         manager.requestLocation()
         
-        if let _ = parkingSpotView.dropPin {
+        if let _ = dropPin {
             mainActionButton.title = "Forget"
         }
     }
@@ -51,11 +58,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBAction func saveAction(sender: UIBarButtonItem) {
         
         // Is there a pin on the map?
-        if let _ = parkingSpotView.dropPin  {
+        if let _ = dropPin  {
             
             // Forget loc
-            mapView.removeAnnotation(parkingSpotView.dropPin!)
-            parkingSpotView.dropPin = nil
+            mapView.removeAnnotation(dropPin!)
+            dropPin = nil
             updateMapView(userLocation, pin: nil)
             mainActionButton.title = "Remember"
             parkingSpot.coords = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -66,11 +73,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             // Remember new loc
             parkingSpot.reminder = reminderDatePicker.date
             let dateString = dateFormatter.stringFromDate(parkingSpot.reminder)
-            parkingSpotView.savePin(userLocation, title: dateString)
-            updateMapView(userLocation, pin: parkingSpotView.dropPin)
+            savePin(userLocation, title: dateString)
+            updateMapView(userLocation, pin: dropPin)
             mainActionButton.title = "Forget"
             parkingSpot.coords = userLocation
-            parkingSpotView.setNotification(parkingSpot.reminder)
+            setNotification(parkingSpot.reminder)
             
         }
         
@@ -93,9 +100,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         userLocation = locations[0].coordinate
 
-        if let _ = parkingSpotView.dropPin {
+        if let _ = dropPin {
             
-            updateMapView(userLocation, pin: parkingSpotView.dropPin)
+            updateMapView(userLocation, pin: dropPin)
             
         } else {
             
@@ -148,7 +155,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if (parkingSpot.coords.longitude != 0) {
             
             let dateString = dateFormatter.stringFromDate(parkingSpot.reminder)
-            parkingSpotView.savePin(parkingSpot.coords, title: dateString)
+            savePin(parkingSpot.coords, title: dateString)
             reminderDatePicker.date = parkingSpot.reminder
             
         }
@@ -165,6 +172,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
+    
+    
+    
+    // Set notification
+    func setNotification(reminder: NSDate) {
+        
+        // create a local notification
+        notification.fireDate = reminder
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        print("Reminder date: ", reminder.description)
+        
+    }
+    
+    func cancelNotificaion() {
+        
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        
+    }
+    
+    
+    func savePin(location: CLLocationCoordinate2D, title: String) {
+        
+        dropPin = MKPointAnnotation()
+        dropPin?.coordinate = location
+        dropPin?.title = title
+        
+    }
 }
 
 
