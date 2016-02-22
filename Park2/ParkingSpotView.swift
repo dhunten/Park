@@ -30,7 +30,7 @@ class ParkingSpotView: NSObject {
     }
     
     
-    func setReminder(reminder: NSDate) {
+    func setNotification(reminder: NSDate) {
         
         // create a local notification
         notification.fireDate = reminder
@@ -39,7 +39,7 @@ class ParkingSpotView: NSObject {
         
     }
     
-    func cancletReminder() {
+    func cancelNotificaion() {
         
         UIApplication.sharedApplication().cancelAllLocalNotifications()
         

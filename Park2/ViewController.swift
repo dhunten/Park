@@ -6,13 +6,9 @@
 //  Copyright © 2015 BLOOF INDUSTRIES. All rights reserved.
 //
 
-//let interval = ["Every","1st","2nd","3rd","4th","1st & 3rd","2nd & 4th"]
-//let day = ["Monday","Tuesday","Wednesday","Thursday","Friday"]
-
 import UIKit
 import CoreLocation
 import MapKit
-import CoreData
 
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
@@ -74,7 +70,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             updateMapView(userLocation, pin: parkingSpotView.dropPin)
             mainActionButton.title = "Forget"
             parkingSpot.coords = userLocation
-            parkingSpotView.setReminder(parkingSpot.reminder)
+            parkingSpotView.setNotification(parkingSpot.reminder)
             
         }
         
@@ -145,13 +141,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             parkingSpot = ps
             print("Loaded", parkingSpot.coords)
             
+            
         }
         
-        // If loaded a real coord, put the Pin there
+        // If loaded a real coord, put the Pin there/update UI
         if (parkingSpot.coords.longitude != 0) {
             
-            let dateString = dateFormatter.stringFromDate(reminderDatePicker.date)
+            let dateString = dateFormatter.stringFromDate(parkingSpot.reminder)
             parkingSpotView.savePin(parkingSpot.coords, title: dateString)
+            reminderDatePicker.date = parkingSpot.reminder
             
         }
     }

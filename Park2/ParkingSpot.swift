@@ -12,22 +12,12 @@ import CoreLocation
 import CoreData
 
 
-
-@objc(CarMO)
-class CarMO: NSManagedObject {
-    
-    @NSManaged var lat: Double
-    @NSManaged var long: Double
-    
-}
-
-
-
-
+// Model?
 class ParkingSpot: NSObject, NSCoding {
     
     var coords: CLLocationCoordinate2D
     var reminder: NSDate
+    
     
     // MARK: Archiving Paths
     static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
@@ -63,14 +53,14 @@ class ParkingSpot: NSObject, NSCoding {
     
 
     // Save a location vis NSCoding
-    func saveLocation(location: CLLocationCoordinate2D) {
+    func saveLocation() {
         
 
         
     }
     
     
-    // Load data from core data
+    // Load data
     func loadLocation() {
         
 
