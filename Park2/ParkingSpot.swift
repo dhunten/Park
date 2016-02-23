@@ -54,6 +54,13 @@ class ParkingSpot: NSObject, NSCoding {
     }
     
     
+    func isSaved() -> Bool {
+        
+        return (coords.longitude != 0)
+        
+    }
+    
+    
     // MARK: Types
     
     struct PropertyKey {
