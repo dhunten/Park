@@ -39,6 +39,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         notification.alertBody = "Move your car!"
         notification.alertAction = "See your car's location"
         notification.category = "CAR_CATEGORY"
+        notification.soundName = UILocalNotificationDefaultSoundName
+        notification.applicationIconBadgeNumber = 1
         
         // Time remaining label formatter
         timeRemainderFormatter.includesTimeRemainingPhrase = true
@@ -214,7 +216,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         return nil
     }
     
-    // BUG: Drag doesn't end
+
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, didChangeDragState newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
         
         if newState == .Ending {
