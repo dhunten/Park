@@ -208,7 +208,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             annotationView.draggable = true
             annotationView.canShowCallout = true
             //pinAnnotationView.animatesDrop = true
-            annotationView.image = UIImage(named: "Car")
+            annotationView.image = UIImage(named: "Car") // 40 x 60
+            annotationView.centerOffset = CGPoint(x: 0, y: -26)
             return annotationView
             
         }
