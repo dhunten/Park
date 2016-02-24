@@ -214,12 +214,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         return nil
     }
     
+    // BUG: Drag doesn't end
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, didChangeDragState newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
         
         if newState == .Ending {
             
             parkingSpot.coords = view.annotation!.coordinate
             saveToFile()
+            view.dragState = .None
             
         }
         
