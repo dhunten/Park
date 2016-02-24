@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -37,14 +38,6 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MFT-7u-KEd">
-                                <rect key="frame" x="270" y="480" width="60" height="60"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="nj7-Sn-Q5V"/>
-                                </constraints>
-                                <state key="normal" image="Add"/>
-                            </button>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="10" translatesAutoresizingMaskIntoConstraints="NO" id="Dc1-4Z-HHy">
                                 <rect key="frame" x="0.0" y="20" width="600" height="163"/>
                                 <animations/>
@@ -55,11 +48,19 @@
                                     <!--2016-02-19 17:33:44 +0000-->
                                 </date>
                             </datePicker>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remaining Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Qt-GB-X3D">
+                                <rect key="frame" x="20" y="20" width="560" height="163"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Dc1-4Z-HHy" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="7sa-Kj-Qdr"/>
+                            <constraint firstItem="odp-LO-1mO" firstAttribute="top" secondItem="5Qt-GB-X3D" secondAttribute="bottom" constant="8" symbolic="YES" id="8kl-hW-9nX"/>
                             <constraint firstAttribute="trailing" secondItem="odp-LO-1mO" secondAttribute="trailing" id="CE7-9j-DXI"/>
                             <constraint firstItem="odp-LO-1mO" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="CdV-eG-Ndl"/>
                             <constraint firstItem="odp-LO-1mO" firstAttribute="leading" secondItem="5gm-Qa-RH2" secondAttribute="leading" id="D37-jd-kGC"/>
@@ -67,16 +68,18 @@
                             <constraint firstItem="odp-LO-1mO" firstAttribute="leading" secondItem="Dc1-4Z-HHy" secondAttribute="leading" id="Fms-f4-up0"/>
                             <constraint firstItem="odp-LO-1mO" firstAttribute="trailing" secondItem="5gm-Qa-RH2" secondAttribute="trailing" id="JGY-OF-ShJ"/>
                             <constraint firstItem="odp-LO-1mO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="N3y-XY-o1w"/>
-                            <constraint firstItem="MFT-7u-KEd" firstAttribute="centerX" secondItem="5gm-Qa-RH2" secondAttribute="centerX" id="Wts-Y7-shD"/>
+                            <constraint firstItem="5Qt-GB-X3D" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="WZz-vx-ive"/>
+                            <constraint firstItem="5Qt-GB-X3D" firstAttribute="centerX" secondItem="Dc1-4Z-HHy" secondAttribute="centerX" id="XEc-6S-sxM"/>
                             <constraint firstItem="5gm-Qa-RH2" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="btC-nh-CBp"/>
                             <constraint firstItem="Dc1-4Z-HHy" firstAttribute="trailing" secondItem="5gm-Qa-RH2" secondAttribute="trailing" id="dge-PG-Jd8"/>
-                            <constraint firstItem="5gm-Qa-RH2" firstAttribute="top" secondItem="MFT-7u-KEd" secondAttribute="bottom" constant="16" id="qzI-sV-zjO"/>
+                            <constraint firstItem="5Qt-GB-X3D" firstAttribute="top" secondItem="Dc1-4Z-HHy" secondAttribute="top" id="qHc-Ot-rgQ"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="mainActionButton" destination="oKE-2W-wv9" id="g0a-KD-EAp"/>
                         <outlet property="mapView" destination="odp-LO-1mO" id="fpi-pm-aJJ"/>
                         <outlet property="reminderDatePicker" destination="Dc1-4Z-HHy" id="CXz-x7-vaB"/>
+                        <outlet property="timeRemainingLabel" destination="5Qt-GB-X3D" id="m2A-S2-DgW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -85,7 +88,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add" width="40" height="60"/>
         <image name="NavArrow" width="24" height="24"/>
     </resources>
 </document>

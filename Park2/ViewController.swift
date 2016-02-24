@@ -15,6 +15,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mainActionButton: UIBarButtonItem!
     @IBOutlet weak var reminderDatePicker: UIDatePicker!
+    @IBOutlet weak var timeRemainingLabel: UILabel!
     var parkingSpot = ParkingSpot()
     var manager: CLLocationManager!
     var userLocation = CLLocationCoordinate2D()
@@ -29,7 +30,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         super.viewDidLoad()
         
         // Notifications setup
-        reminderDatePicker.minimumDate = NSDate(timeIntervalSinceNow: 0)
+        reminderDatePicker.minimumDate = NSDate()
         dateFormatter.dateStyle = .FullStyle
         dateFormatter.timeStyle = .NoStyle
         timeFormatter.dateStyle = .NoStyle
@@ -41,7 +42,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // Location manager setup
         manager = CLLocationManager()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         manager.distanceFilter = 25 //meters
         manager.requestWhenInUseAuthorization()
         
@@ -69,7 +70,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             dropPin = nil
             mainActionButton.title = "Remember"
             parkingSpot.coords = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-            reminderDatePicker.minimumDate = NSDate(timeIntervalSinceNow: 0)
+            reminderDatePicker.minimumDate = NSDate(timeIntervalSinceNow: 360)
             
         } else {
             
@@ -121,8 +122,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         if parkingSpot.isSaved() {
             
-            // Set date picker to reminder time
-            reminderDatePicker.date = parkingSpot.reminder
+            // Set date picker to reminder time & Update and display time remaining
+            let formatter = NSDateComponentsFormatter()
+            formatter.includesTimeRemainingPhrase = true
+            formatter.unitsStyle = .Abbreviated
+            formatter.allowedUnits = [.Day, .Hour, .Minute]
+            let timeleft = formatter.stringFromTimeInterval(parkingSpot.reminder.timeIntervalSinceDate(NSDate()))
+            timeRemainingLabel.text = timeleft
+            timeRemainingLabel.hidden = false
+            reminderDatePicker.hidden = true
             
             // Update pin
             if let pin = dropPin, _ = mapView.viewForAnnotation(pin) {
@@ -147,6 +155,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
         } else {
             
+            timeRemainingLabel.hidden = true
+            reminderDatePicker.hidden = false
+            
             let coordinateRegion = MKCoordinateRegionMakeWithDistance(userLocation, 20.0,  20.0)
             mapView.setRegion(coordinateRegion, animated: true)
             
@@ -160,13 +171,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         if annotation is MKPointAnnotation {
             
-            let pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "myPin")
+            let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "myPin")
+            annotationView.draggable = true
+            annotationView.canShowCallout = true
+            //pinAnnotationView.animatesDrop = true
+            annotationView.image = UIImage(named: "Car")
+            return annotationView
             
-            pinAnnotationView.draggable = true
-            pinAnnotationView.canShowCallout = true
-            pinAnnotationView.animatesDrop = true
-            
-            return pinAnnotationView
         }
         
         return nil
