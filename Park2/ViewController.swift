@@ -21,6 +21,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var userLocation = CLLocationCoordinate2D()
     let dateFormatter = NSDateFormatter()
     let timeFormatter = NSDateFormatter()
+    let timeRemainderFormatter = NSDateComponentsFormatter()
     let notification = UILocalNotification()
     var dropPin: MKPointAnnotation? = nil
 
@@ -38,6 +39,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         notification.alertBody = "Move your car!"
         notification.alertAction = "See your car's location"
         notification.category = "CAR_CATEGORY"
+        
+        // Time remaining label formatter
+        timeRemainderFormatter.includesTimeRemainingPhrase = true
+        timeRemainderFormatter.unitsStyle = .Abbreviated
+        timeRemainderFormatter.allowedUnits = [.Day, .Hour, .Minute]
+        let _ = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateTimeView", userInfo: nil, repeats: true)
 
         // Location manager setup
         manager = CLLocationManager()
@@ -85,6 +92,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         updateMapView()
         saveToFile()
+        manager.requestLocation()
 
     }
     
@@ -123,14 +131,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if parkingSpot.isSaved() {
             
             // Set date picker to reminder time & Update and display time remaining
-            let formatter = NSDateComponentsFormatter()
-            formatter.includesTimeRemainingPhrase = true
-            formatter.unitsStyle = .Abbreviated
-            formatter.allowedUnits = [.Day, .Hour, .Minute]
-            let timeleft = formatter.stringFromTimeInterval(parkingSpot.reminder.timeIntervalSinceDate(NSDate()))
-            timeRemainingLabel.text = timeleft
-            timeRemainingLabel.hidden = false
-            reminderDatePicker.hidden = true
+            updateTimeView()
             
             // Update pin
             if let pin = dropPin, _ = mapView.viewForAnnotation(pin) {
@@ -145,6 +146,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 dropPin?.title = dateString
                 dropPin?.subtitle = timeString
                 mapView.addAnnotation(dropPin!)
+                
             }
             
             // Zoom map to correct bounds
@@ -155,11 +157,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
         } else {
             
-            timeRemainingLabel.hidden = true
-            reminderDatePicker.hidden = false
-            
+            updateTimeView()
             let coordinateRegion = MKCoordinateRegionMakeWithDistance(userLocation, 20.0,  20.0)
             mapView.setRegion(coordinateRegion, animated: true)
+            
+        }
+        
+    }
+    
+    
+    func updateTimeView() {
+        
+        if parkingSpot.isSaved() {
+            
+            let remainingTimeForSpot = parkingSpot.reminder.timeIntervalSinceDate(NSDate())
+            var remainingTimeStringForLabel = String?()
+            
+            if remainingTimeForSpot < 0 {
+                
+                remainingTimeStringForLabel = "Time's up!"
+                
+            } else {
+                
+                remainingTimeStringForLabel = timeRemainderFormatter.stringFromTimeInterval(remainingTimeForSpot)
+                
+            }
+            
+            timeRemainingLabel.text = remainingTimeStringForLabel
+            timeRemainingLabel.hidden = false
+            reminderDatePicker.hidden = true
+            
+        } else {
+            
+            timeRemainingLabel.hidden = true
+            reminderDatePicker.hidden = false
             
         }
         
